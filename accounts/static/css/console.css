@@ -1,0 +1,99 @@
+.guide-section {
+    position: fixed;
+    width: 200px;
+    height: 80vh;
+    top: 48px;
+    left: 0;
+    border-right: 1px solid rgb(135, 196, 196);
+}
+
+.guide-section ul {
+    padding: 0;
+}
+
+.guide-section li {
+    list-style: none;
+    padding: 20px 20px 10px 25px;
+    border-bottom: 1px solid;
+    /* display: flex; */
+    /* align-items: center; */
+}
+
+.file-section {
+    margin-top: 48px;
+    margin-left: 200px;
+}
+
+.file-section form {
+    margin-top: 70px;
+    margin-left: 30px;
+}
+
+.file-section input[type="file"] {
+    border: 2px solid;
+    padding: 2px;
+}
+
+.download-section {
+    margin-top: 48px;
+    margin-left: 200px;
+}
+
+.download-section a {
+    display: flex;
+    font-weight: 700;
+    border-bottom: 1px solid rgb(69, 145, 145);
+    padding: 20px 20px 10px 30px;
+}
+
+.workbench-section {
+    margin-top: 48px;
+    margin-left: 200px;
+}
+
+.workbench-section > form {
+    
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.workbench-section > form > input:first-child {
+    max-width: 180px;
+}
+
+.workbench-section > form > input:nth-child(2) {
+    margin-right: 40px;
+}
+
+.processing-section {
+    margin-top: 30px;
+}
+
+.processing-section form {
+    position: fixed;
+    top: 250px;
+}
+
+.processing-section article {
+    height: 100px;
+    background-color: rgb(240, 240, 240);
+    color: black;
+    padding: 10px 10px;
+}
+
+.processing-section form input:last-child {
+    margin-left: 100px;
+}
+
+.processing-section .warning {
+    position: fixed;
+    top: 280px;
+}
+
+li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+

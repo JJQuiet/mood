@@ -1,0 +1,15 @@
+.container {
+    margin-left: 20vw;
+}
+
+article {
+    background-color: #EEE;
+    height: 100px;
+    margin-right: 200px;
+}
+#docfile {
+    border: 1px solid black;
+}
+section {
+    margin-top: 50px;
+}

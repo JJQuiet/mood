@@ -1,0 +1,12 @@
+<h3>Register</h3>
+
+<form action="" method="POST">{% csrf_token %}
+    {% for field in form %}
+        {{ field.label_tag }}
+        {{ field }}
+    {% endfor %}
+    <!-- {{ form.username.label }} -->
+    <!-- {{ form.username.label_tag }} -->
+    <!-- {{ form.username }} -->
+    <input type="submit" value="save" name="Create User">
+</form>
