@@ -43,9 +43,13 @@
             </svg>
             <span>文件下载</span>
         </a></li>
+        <li><a href="javascript:void(0);" class="">
+            <svg t="1619861675149" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2374" width="32" height="32"><path d="M920.5248 942.08H148.61824A82.12992 82.12992 0 0 1 66.56 860.06272V108.57984a36.9152 36.9152 0 0 1 73.8304 0v751.48288a8.23808 8.23808 0 0 0 8.22784 8.22272H920.5248a36.89984 36.89984 0 1 1 0 73.79456zM230.912 643.44064a36.89984 36.89984 0 0 1-25.6-63.4624l220.3136-212.2496a36.9152 36.9152 0 0 1 51.712 0.47616l122.8288 122.77248 212.79744-207.96928a36.90496 36.90496 0 1 1 51.6096 52.76672l-238.89408 233.472a36.9152 36.9152 0 0 1-51.90144-0.29696L450.71872 445.99808 256.512 633.10336a36.77184 36.77184 0 0 1-25.6 10.33728z" fill="#595BB3" p-id="2375"></path><path d="M833.50016 489.56416l-199.3472 199.52128a22.9888 22.9888 0 0 1-31.08864-0.16384l-126.19776-119.61344a22.98368 22.98368 0 0 0-30.97088-0.27136L268.288 731.30496a20.82816 20.82816 0 0 0 15.36 36.03456H849.92a21.54496 21.54496 0 0 0 22.10816-21.03296l-0.96256-241.84832c-0.08704-18.51392-23.6032-27.83744-37.56544-14.89408z" fill="#F4CA1C" p-id="2376"></path></svg>
+            <span>语句分析</span>
+        </a></li>
     </ul>
 </div>
-<div class="container">
+<div class="container1">
     <section id="workbench" class="">
         <form action="" method="post" class="mb-3">{% csrf_token %}
             <select name="selectedFile">
@@ -55,11 +59,13 @@
             </select>
             <input type="submit" onclick="javascript:void(0);" name="edit" id="edit" class="btn btn-primary btn-sm" value="编辑">
         </form>
-        <article class="mb-5">
+        <div class="{{ edit_alert_display }} alert alert-danger mb-1 mt-1" id="process-alert">该文件已被三人处理</div>
+        <article class="p-3">
             {{ cur_edit.review }}
         </article>
-        <form action="" method="POST" id="process" class="d-none">{% csrf_token %}
-            <input type="hidden" name="docitemsid" value={{ cur_edit.id }}>
+        <div class="{{ process_alert_display }} alert alert-danger mb-1" id="process-alert">{{ process_alert }}</div>
+        <form id="process" action="" method="POST" class="{{ process_submit_display }} ">{% csrf_token %}
+            <input type="hidden" name="docitemid" value={{ cur_edit.id }}>
             <input type="submit" name="previous" class="btn btn-primary" value="上一条">
             <input type="submit" name="negative" class="btn btn-primary" value="消极的">
             <input type="submit" name="flat" class="btn btn-primary" value="中性的">
@@ -71,7 +77,6 @@
         <form class="form-inline" action='' method="post" enctype="multipart/form-data" >
             {% csrf_token %}
             <input type="file" id="docfile" name="docfile" required>
-            
             <input type="submit" name="upload" class="btn btn-primary" value="上传">
         </form>
     </section>
@@ -85,26 +90,58 @@
             <input type="submit" name="download" class="btn btn-primary btn-sm" value="下载">
         </form>
         <input type="button" class="btn dropdown-toggle " data-toggle="dropdown">
-
+    </section>
+    <section id="analyze" class="d-none">
+        <form id="form_analyze" action="" method="POST">{% csrf_token %}
+            <input type="text" name="analyzeText">
+            <input type="submit" name="analyze" class="btn btn-primary btn-sm" value="语句分析">
+        </form>
+        <div id="displayAnalyzed">{{ analyzedText }}</div>
     </section>
 </div>
 <script>
     $('ul li:first-child a').click(function(){
-        // $('.container section').toggleClass("d-none")
         $('#workbench').attr("class","")
         $('#upload').attr("class","d-none")
         $('#download').attr("class","d-none")
+        $('#analyze').attr("class", "d-none")
     })
     $('ul li:nth-child(2) a').click(function(){
         $('#workbench').attr("class","d-none")
         $('#upload').attr("class","")
         $('#download').attr("class","d-none")
+        $('#analyze').attr("class", "d-none")
+    })
+    $('ul li:nth-child(3) a').click(function(){
+        $('#workbench').attr("class","d-none")
+        $('#upload').attr("class","d-none")
+        $('#download').attr("class","")
+        $('#analyze').attr("class", "d-none")
     })
     $('ul li:last-child a').click(function(){
         $('#workbench').attr("class","d-none")
         $('#upload').attr("class","d-none")
-        $('#download').attr("class","")
+        $('#download').attr("class","d-none")
+        $('#analyze').attr("class", "")
     })
-    $('#process').attr("class","{{ d_block }}")
+    $('#form_analyze').submit(function(event){
+        event.preventDefault()
+        var ccc = $('[name=csrfmiddlewaretoken]')[0].value
+        console.log('ccc', ccc)
+        $.ajax({
+            url: 'analyse',
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': Cookies.get('csrftoken'),
+                'csrfmiddlewaretoken': $('[name=csrfmiddlewaretoken]')[0].value,
+                'analyzeText': $('[name=analyzeText]').val(),
+            },
+            success: function(data) {
+                // console.log('wwwwwwwwwhere is:  ', data)
+                // $('#displayAnalyzed')[0].innerHTML = data.analyzedText
+                // $('#displayAnalyzed')[0].innerHTML = {{ analyzedText }}
+            }
+        })
+    })
 </script>   
 {% endblock %}

@@ -1,15 +1,19 @@
-.container {
-    margin-left: 20vw;
+.container1 {
+    margin: auto;
+    padding: 0 15vw 0 20vw;
 }
 
 article {
     background-color: #EEE;
     height: 100px;
-    margin-right: 200px;
 }
 #docfile {
     border: 1px solid black;
 }
 section {
     margin-top: 50px;
+}
+#process {
+    position: absolute;
+    top: 38vh;
 }

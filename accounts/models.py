@@ -31,7 +31,14 @@ class Docitems(models.Model):
                 self.label = self.label1
             if self.label2 == self.label3:
                 self.label = self.label2
-
+    def calculabel(self):
+        if self.label1 == self.label2 or self.label1 == self.label3 or self.label2 == self.label3 :
+            if self.label1 == self.label2:
+                return self.label1
+            if self.label1 == self.label3:
+                return self.label1
+            if self.label2 == self.label3:
+                return self.label2
 class editRecord(models.Model):
     editor = models.ForeignKey(User, on_delete=models.CASCADE)
     file = models.ForeignKey(Document, on_delete=models.CASCADE)
