@@ -17,3 +17,43 @@ section {
     position: absolute;
     top: 38vh;
 }
+
+.table {
+    background-color: #EEE;
+}
+
+#form_analyze {
+    /* display: flex; */
+    /* justify-content: space-around; */
+    position: relative;
+
+}
+
+input[name=analyze] {
+    position: absolute;
+    top: 40%;
+    right: 10%;
+    padding: 10px 20px;
+}
+
+table {
+    border-collapse: collapse;
+}
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+th {
+    padding: 12px 8px;
+    text-align: left;
+    background-color: #878eec;
+    color: white;
+}
+
+#parse {
+    white-space: pre-wrap;
+}

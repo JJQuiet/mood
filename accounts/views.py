@@ -6,11 +6,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Docitems, Document, editRecord
 from django.conf import settings
-import csv, os
-from django.http import HttpResponse
-# from .text_processing import delete_stopwords, sentence_analyse, test
-# from .text_processing import  test
-from django.http import JsonResponse
+import csv, os, json
+from django.http import HttpResponse, JsonResponse
+# from django.http.response import 
+from .stanford_coreNLP_text_process import  stanfordCoreNLP_process, word_tokenize
+from django.template.context import RequestContext
 # Create your views here.
 
 def register_view(request):
@@ -137,16 +137,12 @@ def home_view(request):
     return render(request, 'accounts/index.html', context)
 
 def analyse(request):
-    context = {
-        "documents": Document.objects.all(),
-        'process_submit_display': 'd-none',
-        'process_alert': ''
-    }
-    # context['analyzedText'] = sentence_analyse(request.POST['analyzeText'])
-    # context['analyzedText'] = sentence_analyse('hello world, let"s talk about others')
-    # return JsonResponse(request, context)
-    if request.method == 'POST':
-        # context['analyzedText'] = test('hello world, let"s talk about others')
-        context['analyzedText'] = 'hello world, let"s talk about others'
-
-    return render(request, 'accounts/index.html', context)
+    # if request.method == 'POST':
+    # print('request.data is ', request.data)
+    if request.POST['submit'] == 'stanfordCoreNLP_process':
+        result = stanfordCoreNLP_process(request.POST['tobe_processed'])
+        return JsonResponse(result)
+    word_tokenize_result = word_tokenize(request.POST['tobe_processed'])
+    result = {}
+    result['word_tokenize'] = word_tokenize_result
+    return JsonResponse(result)
