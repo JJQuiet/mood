@@ -47,10 +47,14 @@
             <svg t="1619861675149" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2374" width="32" height="32"><path d="M920.5248 942.08H148.61824A82.12992 82.12992 0 0 1 66.56 860.06272V108.57984a36.9152 36.9152 0 0 1 73.8304 0v751.48288a8.23808 8.23808 0 0 0 8.22784 8.22272H920.5248a36.89984 36.89984 0 1 1 0 73.79456zM230.912 643.44064a36.89984 36.89984 0 0 1-25.6-63.4624l220.3136-212.2496a36.9152 36.9152 0 0 1 51.712 0.47616l122.8288 122.77248 212.79744-207.96928a36.90496 36.90496 0 1 1 51.6096 52.76672l-238.89408 233.472a36.9152 36.9152 0 0 1-51.90144-0.29696L450.71872 445.99808 256.512 633.10336a36.77184 36.77184 0 0 1-25.6 10.33728z" fill="#595BB3" p-id="2375"></path><path d="M833.50016 489.56416l-199.3472 199.52128a22.9888 22.9888 0 0 1-31.08864-0.16384l-126.19776-119.61344a22.98368 22.98368 0 0 0-30.97088-0.27136L268.288 731.30496a20.82816 20.82816 0 0 0 15.36 36.03456H849.92a21.54496 21.54496 0 0 0 22.10816-21.03296l-0.96256-241.84832c-0.08704-18.51392-23.6032-27.83744-37.56544-14.89408z" fill="#F4CA1C" p-id="2376"></path></svg>
             <span>语句分析</span>
         </a></li>
+        <li><a href="javascript:void(0);" class="">
+            <svg t="1620114744658" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2933" width="32" height="32"><path d="M789.333333 512a192 192 0 0 1 192 192v42.666667a191.317333 191.317333 0 0 1-49.962666 129.194666 40.618667 40.618667 0 0 1 14.592 9.770667l45.696 45.696a42.666667 42.666667 0 0 1-60.288 60.330667l-45.738667-45.696a42.666667 42.666667 0 0 1-12.8-26.410667A190.549333 190.549333 0 0 1 789.333333 938.666667h-42.666666a192 192 0 0 1-192-192v-42.666667a192 192 0 0 1 192-192zM810.666667 0a128 128 0 0 1 127.786666 120.490667L938.666667 128v256a42.666667 42.666667 0 0 1-85.034667 4.992L853.333333 384V128a42.666667 42.666667 0 0 0-37.674666-42.368L810.666667 85.333333H128a42.666667 42.666667 0 0 0-42.368 37.674667L85.333333 128v725.333333a42.666667 42.666667 0 0 0 37.674667 42.368L128 896h298.666667a42.666667 42.666667 0 0 1 4.992 85.034667L426.666667 981.333333H128a128 128 0 0 1-127.786667-120.490666L0 853.333333V128A128 128 0 0 1 120.490667 0.213333L128 0h682.666667z m-21.333334 597.333333h-42.666666a106.666667 106.666667 0 0 0-106.666667 106.666667v42.666667a106.666667 106.666667 0 0 0 106.666667 106.666666h42.666666a106.666667 106.666667 0 0 0 106.666667-106.666666v-42.666667a106.666667 106.666667 0 0 0-106.666667-106.666667zM469.333333 512a42.666667 42.666667 0 0 1 0 85.333333H256a42.666667 42.666667 0 0 1 0-85.333333h213.333333z m213.333334-213.333333a42.666667 42.666667 0 0 1 0 85.333333H256a42.666667 42.666667 0 1 1 0-85.333333h426.666667z" fill="#008df0" p-id="2934"></path></svg>
+            <span>文件分析</span>
+        </a></li>
     </ul>
 </div>
 <div class="container1">
-    <section id="workbench" class="">
+    <section id="workbench" class="d-none">
         <form action="" method="post" class="mb-3">{% csrf_token %}
             <select name="selectedFile">
                 {% for document in documents %}
@@ -91,14 +95,27 @@
         </form>
         <input type="button" class="btn dropdown-toggle " data-toggle="dropdown">
     </section>
-    <section id="analyze" class="d-none">
+    <section id="sentence_analyze" class="d-none">
         <form id="form_analyze" action="" method="POST">{% csrf_token %}
-            <textarea name="tobe_processed" cols="80" rows="6" placeholder="请输入待分析语句......." >张三和李四在2019年3月23日在北京的腾讯技术有限公司一起开会。</textarea>
-            <input type="button" name="stanfordCoreNLP_process" class="btn btn-primary btn-sm" value="综合分析">
+            <textarea id="tobe_processed" cols="80" rows="6" placeholder="请输入待分析语句......." >这个产品很好用</textarea>
+            <input type="button" id="stanfordCoreNLP_process" class="btn btn-primary btn-sm" value="综合分析">
             <input type="submit" name="word_tokenize" class="btn btn-primary btn-sm" value="word_tokenize">
+            <input type="button" id="simple_text_sentiment" class="btn btn-primary btn-sm" value="simple_text_sentiment">
+            <input type="button" id="simple_text_wordcloud" class="btn btn-primary btn-sm" value="simple_text_wordcloud">
         </form>
-        {{ Documents|safe }}
         <div id="displayProcessed" class="alert"></div>
+    </section>
+    <section id="csv_file_analyze" class="d-block">
+        <form action="" method="post">{% csrf_token %}
+            <select id="csv_file_tobe_analysed">
+                {% for document in documents %}
+                <option value="{{ document.id }}">{{ document.file.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="button" id="csv_file_sentiment" class="btn btn-primary btn-sm" value="csv_file_sentiment">
+            <input type="button" id="csvreview_file_wordcloud" class="btn btn-primary btn-sm" value="csvreview_file_wordcloud">
+        </form>
+        <div id="display_csv_file_Processed" class="alert"></div>
     </section>
 </div>
 <script>
@@ -121,25 +138,36 @@
         $('#workbench').attr("class","")
         $('#upload').attr("class","d-none")
         $('#download').attr("class","d-none")
-        $('#analyze').attr("class", "d-none")
+        $('#sentence_analyze').attr("class", "d-none")
+        $('#csv_file_analyze').attr("class", "d-none")
     })
     $('ul li:nth-child(2) a').click(function(){
         $('#workbench').attr("class","d-none")
         $('#upload').attr("class","")
         $('#download').attr("class","d-none")
-        $('#analyze').attr("class", "d-none")
+        $('#sentence_analyze').attr("class", "d-none")
+        $('#csv_file_analyze').attr("class", "d-none")
     })
     $('ul li:nth-child(3) a').click(function(){
         $('#workbench').attr("class","d-none")
         $('#upload').attr("class","d-none")
         $('#download').attr("class","")
-        $('#analyze').attr("class", "d-none")
+        $('#sentence_analyze').attr("class", "d-none")
+        $('#csv_file_analyze').attr("class", "d-none")
+    })
+    $('ul li:nth-child(4) a').click(function(){
+        $('#workbench').attr("class","d-none")
+        $('#upload').attr("class","d-none")
+        $('#download').attr("class","d-none")
+        $('#sentence_analyze').attr("class", "d-block")
+        $('#csv_file_analyze').attr("class", "d-none")
     })
     $('ul li:last-child a').click(function(){
         $('#workbench').attr("class","d-none")
         $('#upload').attr("class","d-none")
         $('#download').attr("class","d-none")
-        $('#analyze').attr("class", "")
+        $('#sentence_analyze').attr("class", "d-none")
+        $('#csv_file_analyze').attr("class", "d-block")
     })
     $('#form_analyze').submit(function(event){
         event.preventDefault()
@@ -150,10 +178,9 @@
                 // 'csrfmiddlewaretoken': Cookies.get('csrftoken'),
                 // 'csrfmiddlewaretoken': $('[name=csrfmiddlewaretoken]')[0].value,
                 'csrfmiddlewaretoken': getCookie('csrftoken'),
-                'tobe_processed': $('[name=tobe_processed]').val(),
+                'tobe_processed': $('#tobe_processed').val(),
             },
             success: function(data) {
-                console.log(data)
                 buildTable(data.word_tokenize)
             }
         })
@@ -169,23 +196,12 @@
         $('#displayProcessed').append(table)
 
     }
-    function buildTable_stanfordCoreNLP_process(data) {
-        var table = '<table>'
-        
-        for(var i = 0; i < data.length; i++) {
-            var row = '<tr><td>' + data[i] + '</td></tr>'
-            table += row
-        }
-        table += '</table>'
-        $('#displayProcessed').append(table)
-
-    }
-    $('[name=stanfordCoreNLP_process]').click(function(){
+    $('#stanfordCoreNLP_process').click(function(){
         data = {
             // 'csrfmiddlewaretoken': Cookies.get('csrftoken'),
             // 'csrfmiddlewaretoken': $('[name=csrfmiddlewaretoken]')[0].value,
             'csrfmiddlewaretoken': getCookie('csrftoken'),
-            'tobe_processed': $('[name=tobe_processed]').val(),
+            'tobe_processed': $('#tobe_processed').val(),
             'submit': 'stanfordCoreNLP_process'
         }
         $.post('analyse', data, function(data){
@@ -199,6 +215,54 @@
             $('#displayProcessed').append(table)
             $('#displayProcessed').append('<div id="parse">' + data.parse + '</div>')
 
+        })
+    })
+    $('#simple_text_sentiment').click(function(){
+        data = {
+            'csrfmiddlewaretoken': getCookie('csrftoken'),
+            'tobe_processed': $('#tobe_processed').val(),
+            'submit': 'simple_text_sentiment'
+        }
+        $.post('analyse', data, function(data){
+            $('#displayProcessed').html('<b>情感值: </b>' + data.sentiments )
+        })
+    })
+    $('#csv_file_sentiment').click(function(){
+        data = {
+            'csrfmiddlewaretoken': getCookie('csrftoken'),
+            'csv_file_tobe_analysed': $('#csv_file_tobe_analysed')[0].value,
+            'submit': 'csv_file_sentiment'
+        }
+        $.post('analyse', data, function(data){
+            var table = '<table>'
+            table += '<tr><th>情感值</th><th>评价</th></tr>'
+            for(var i = 0; i < data.review.length; i++) {
+                var row = '<tr><td>' + data.sentiment[i] + '</td><td>' + data.review[i]+ '</td></tr>'
+                table += row
+            }
+            table += '</table>'
+            $('#display_csv_file_Processed').append(table)
+        })
+    })
+    $('#csvreview_file_wordcloud').click(function(){
+        data = {
+            'csrfmiddlewaretoken': getCookie('csrftoken'),
+            'csv_file_tobe_analysed': $('#csv_file_tobe_analysed')[0].value,
+            'submit': 'csvreview_file_wordcloud'
+        }
+        $.post('analyse', data, function(data){
+            // $('#display_csv_file_Processed').append('')
+        })
+    })
+    
+    $('#simple_text_wordcloud').click(function(){
+        data = {
+            'csrfmiddlewaretoken': getCookie('csrftoken'),
+            'simple_text_wordcloud': $('#tobe_processed')[0].value,
+            'submit': 'simple_text_wordcloud'
+        }
+        $.post('analyse', data, function(data){
+            // $('#displayProcessed').append('')
         })
     })
 </script>   

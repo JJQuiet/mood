@@ -4,14 +4,12 @@ from .forms import CreateUserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Docitems, Document, editRecord
-from django.conf import settings
+from snownlp import SnowNLP
 import csv, os, json
+from .models import Docitems, Document, editRecord
 from django.http import HttpResponse, JsonResponse
-# from django.http.response import 
-from .stanford_coreNLP_text_process import  stanfordCoreNLP_process, word_tokenize
-from django.template.context import RequestContext
-# Create your views here.
+from .process import csvreview_file_wordcloud, simple_text_wordcloud, stanfordCoreNLP_process
+
 
 def register_view(request):
     if request.method == 'POST':
@@ -53,9 +51,6 @@ def home_view(request):
         if any(x in request.POST for x in ['previous', 'negative', 'flat', 'positive', 'next']):
             first = Docitems.objects.filter(document__id=request.session['selectedDocID']).first().id
             last = Docitems.objects.filter(document__id=request.session['selectedDocID']).last().id
-            print('first is  str:', isinstance(request.POST['docitemid'], int))
-            print('first is  str:', isinstance(request.POST['docitemid'], str))
-            print('first is  str:', request.POST['docitemid'])
             if int(request.POST['docitemid']) == first and 'previous' in request.POST:
                 context['process_alert'] = '已经是第一条'
                 context['process_submit_display'] = 'd-block'
@@ -101,7 +96,6 @@ def home_view(request):
                 #     return render(request, 'accounts/index.html', context)
             else:
                 cur_edit = Docitems.objects.get(id=edit_record_row)
-                print('cccccccccccccur-edit is:  ', cur_edit)
             context['cur_edit'] = cur_edit
             context['process_submit_display'] = ""
         if 'previous' in request.POST:
@@ -116,8 +110,6 @@ def home_view(request):
             context['process_submit_display'] = ""
             editRecord.objects.filter(editor=request.user, file=request.session['selectedDocID']).update(last_edit_row=nextrow)
         if any(x in request.POST for x in ['negative', 'flat', 'positive']):
-            print('docitems id is:  ', request.POST['docitemid'])
-            print('session is :  ', request.session['selectedDocID'])
             if 'negative' in request.POST:
                 value = -1
             if 'flat' in request.POST:
@@ -138,11 +130,27 @@ def home_view(request):
 
 def analyse(request):
     # if request.method == 'POST':
-    # print('request.data is ', request.data)
     if request.POST['submit'] == 'stanfordCoreNLP_process':
         result = stanfordCoreNLP_process(request.POST['tobe_processed'])
         return JsonResponse(result)
-    word_tokenize_result = word_tokenize(request.POST['tobe_processed'])
-    result = {}
-    result['word_tokenize'] = word_tokenize_result
-    return JsonResponse(result)
+    if request.POST['submit'] == 'simple_text_sentiment':
+        result = {}
+        result['sentiments'] = SnowNLP(request.POST['tobe_processed']).sentiments
+        return JsonResponse(result)
+    if request.POST['submit'] == 'csv_file_sentiment':
+        rows = Docitems.objects.filter(document__id=request.POST['csv_file_tobe_analysed'])
+        result = {}
+        result['sentiment'] = []
+        result['review'] = []
+        for row in rows:
+            result['review'].append(row.review)
+            result['sentiment'].append(SnowNLP(row.review).sentiments)
+        print('csv_file_sentiment is : ', result)
+        return JsonResponse(result)
+    if request.POST['submit'] == 'csvreview_file_wordcloud':
+        result = {}
+        csvreview_file_wordcloud(request.POST['csv_file_tobe_analysed'])
+        return JsonResponse(result)
+    if request.POST['submit'] == 'simple_text_wordcloud':
+        simple_text_wordcloud(request.POST['simple_text_wordcloud'])
+        return JsonResponse({})

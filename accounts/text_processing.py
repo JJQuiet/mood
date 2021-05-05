@@ -73,7 +73,7 @@ def word_frequency(filename, n):  # 文件 个数
     counts = {}
     for word in words:
         if len(word) == 1:
-            continue
+            continue 
         else:
             counts[word] = counts.get(word, 0) + 1
     items = list(counts.items())
