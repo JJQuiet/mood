@@ -8,7 +8,7 @@ from snownlp import SnowNLP
 import csv, os, json
 from .models import Docitems, Document, editRecord
 from django.http import HttpResponse, JsonResponse
-from .process import csvreview_file_wordcloud, simple_text_wordcloud, stanfordCoreNLP_process
+from .process import *
 
 
 def register_view(request):
@@ -150,7 +150,11 @@ def analyse(request):
     if request.POST['submit'] == 'csvreview_file_wordcloud':
         result = {}
         csvreview_file_wordcloud(request.POST['csv_file_tobe_analysed'])
-        return JsonResponse(result)
+        return JsonResponse({result})
     if request.POST['submit'] == 'simple_text_wordcloud':
         simple_text_wordcloud(request.POST['simple_text_wordcloud'])
+        return JsonResponse({})
+    if request.POST['submit'] == 'csvreview_file_word_frequency_bar_plt':
+        result = {}
+        csvreview_file_word_frequency_bar_plt(request.POST['csv_file_tobe_analysed'])
         return JsonResponse({})

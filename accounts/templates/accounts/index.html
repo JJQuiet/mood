@@ -99,9 +99,8 @@
         <form id="form_analyze" action="" method="POST">{% csrf_token %}
             <textarea id="tobe_processed" cols="80" rows="6" placeholder="请输入待分析语句......." >这个产品很好用</textarea>
             <input type="button" id="stanfordCoreNLP_process" class="btn btn-primary btn-sm" value="综合分析">
-            <input type="submit" name="word_tokenize" class="btn btn-primary btn-sm" value="word_tokenize">
-            <input type="button" id="simple_text_sentiment" class="btn btn-primary btn-sm" value="simple_text_sentiment">
-            <input type="button" id="simple_text_wordcloud" class="btn btn-primary btn-sm" value="simple_text_wordcloud">
+            <input type="button" id="simple_text_sentiment" class="btn btn-primary btn-sm" value="情感值">
+            <input type="button" id="simple_text_wordcloud" class="btn btn-primary btn-sm" value="词云">
         </form>
         <div id="displayProcessed" class="alert"></div>
     </section>
@@ -112,8 +111,9 @@
                 <option value="{{ document.id }}">{{ document.file.name }}</option>
                 {% endfor %}
             </select>
-            <input type="button" id="csv_file_sentiment" class="btn btn-primary btn-sm" value="csv_file_sentiment">
-            <input type="button" id="csvreview_file_wordcloud" class="btn btn-primary btn-sm" value="csvreview_file_wordcloud">
+            <input type="button" id="csv_file_sentiment" class="btn btn-primary btn-sm" value="情感分析">
+            <input type="button" id="csvreview_file_wordcloud" class="btn btn-primary btn-sm" value="词云">
+            <input type="button" id="csvreview_file_word_frequency_bar_plt" class="btn btn-primary btn-sm" value="词频统计">
         </form>
         <div id="display_csv_file_Processed" class="alert"></div>
     </section>
@@ -169,33 +169,6 @@
         $('#sentence_analyze').attr("class", "d-none")
         $('#csv_file_analyze').attr("class", "d-block")
     })
-    $('#form_analyze').submit(function(event){
-        event.preventDefault()
-        $.ajax({
-            url: 'analyse',
-            type: 'POST',
-            data: {
-                // 'csrfmiddlewaretoken': Cookies.get('csrftoken'),
-                // 'csrfmiddlewaretoken': $('[name=csrfmiddlewaretoken]')[0].value,
-                'csrfmiddlewaretoken': getCookie('csrftoken'),
-                'tobe_processed': $('#tobe_processed').val(),
-            },
-            success: function(data) {
-                buildTable(data.word_tokenize)
-            }
-        })
-    })
-    function buildTable(data) {
-        var table = '<table>'
-        
-        for(var i = 0; i < data.length; i++) {
-            var row = '<tr><td>' + data[i] + '</td></tr>'
-            table += row
-        }
-        table += '</table>'
-        $('#displayProcessed').append(table)
-
-    }
     $('#stanfordCoreNLP_process').click(function(){
         data = {
             // 'csrfmiddlewaretoken': Cookies.get('csrftoken'),
@@ -244,6 +217,17 @@
             $('#display_csv_file_Processed').append(table)
         })
     })
+    
+    $('#simple_text_wordcloud').click(function(){
+        data = {
+            'csrfmiddlewaretoken': getCookie('csrftoken'),
+            'simple_text_wordcloud': $('#tobe_processed')[0].value,
+            'submit': 'simple_text_wordcloud'
+        }
+        $.post('analyse', data, function(data){
+            // $('#displayProcessed').append('')
+        })
+    })
     $('#csvreview_file_wordcloud').click(function(){
         data = {
             'csrfmiddlewaretoken': getCookie('csrftoken'),
@@ -254,15 +238,14 @@
             // $('#display_csv_file_Processed').append('')
         })
     })
-    
-    $('#simple_text_wordcloud').click(function(){
+    $('#csvreview_file_word_frequency_bar_plt').click(function(){
         data = {
             'csrfmiddlewaretoken': getCookie('csrftoken'),
-            'simple_text_wordcloud': $('#tobe_processed')[0].value,
-            'submit': 'simple_text_wordcloud'
+            'csv_file_tobe_analysed': $('#csv_file_tobe_analysed')[0].value,
+            'submit': 'csvreview_file_word_frequency_bar_plt'
         }
         $.post('analyse', data, function(data){
-            // $('#displayProcessed').append('')
+            // $('#display_csv_file_Processed').append('')
         })
     })
 </script>   

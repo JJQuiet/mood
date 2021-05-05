@@ -17,6 +17,7 @@
 * stanford-corenlp简单标注,table呈现，root white-space: pre-wrap呈现
 * wordcloud 词云
 * snownlp sentiments
+* matplotlib实现简单词频柱状图
 
 # CHANGES
 
@@ -27,4 +28,18 @@
 
 # TIPS
 
-* 判断是不是int/str ==isinstance(request.POST['docitemid'], int)==
+* 判断是不是int/str [^isinstance]
+
+# DEBUG
+
+- [ ] matplotlib中文乱码  [^code1][^ code2 ] [ref](https://github.com/matplotlib/matplotlib/issues/15062)
+- [ ] 
+
+
+
+
+
+[^isinstance]: isinstance(request.POST['docitemid'], int)
+[^code1]:```  plt.rcParams['font.family'] = ['sans-serif']    ```
+[^ code2 ]:```plt.rcParams['font.sans-serif'] = ['SimHei']  ```
+
