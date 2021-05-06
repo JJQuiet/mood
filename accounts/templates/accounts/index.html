@@ -134,40 +134,11 @@
         }
         return cookieValue;
     }
-    $('ul li:first-child a').click(function(){
-        $('#workbench').attr("class","")
-        $('#upload').attr("class","d-none")
-        $('#download').attr("class","d-none")
-        $('#sentence_analyze').attr("class", "d-none")
-        $('#csv_file_analyze').attr("class", "d-none")
-    })
-    $('ul li:nth-child(2) a').click(function(){
-        $('#workbench').attr("class","d-none")
-        $('#upload').attr("class","")
-        $('#download').attr("class","d-none")
-        $('#sentence_analyze').attr("class", "d-none")
-        $('#csv_file_analyze').attr("class", "d-none")
-    })
-    $('ul li:nth-child(3) a').click(function(){
-        $('#workbench').attr("class","d-none")
-        $('#upload').attr("class","d-none")
-        $('#download').attr("class","")
-        $('#sentence_analyze').attr("class", "d-none")
-        $('#csv_file_analyze').attr("class", "d-none")
-    })
-    $('ul li:nth-child(4) a').click(function(){
-        $('#workbench').attr("class","d-none")
-        $('#upload').attr("class","d-none")
-        $('#download').attr("class","d-none")
-        $('#sentence_analyze').attr("class", "d-block")
-        $('#csv_file_analyze').attr("class", "d-none")
-    })
-    $('ul li:last-child a').click(function(){
-        $('#workbench').attr("class","d-none")
-        $('#upload').attr("class","d-none")
-        $('#download').attr("class","d-none")
-        $('#sentence_analyze').attr("class", "d-none")
-        $('#csv_file_analyze').attr("class", "d-block")
+    $('li').each(function(index){
+        $(this).click(function(){
+            $('section:nth-child(' + (index + 1) +')').attr('class', 'd-block')
+            $('section:not(:nth-child(' + (index + 1) + '))').attr('class', 'd-none')
+        })
     })
     $('#stanfordCoreNLP_process').click(function(){
         data = {

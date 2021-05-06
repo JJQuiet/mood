@@ -62,7 +62,7 @@ def csvreview_file_word_frequency_bar_plt(docID):
     top10['frequency'] = []
     custom_stopwords = open(os.path.join(BASE_DIR, 'accounts\static\snippets\\baidu_stopwords_custom'), 'r', encoding='UTF-8', errors='ignore').read().split("\n") # list [] , object list {} 都可以
     for row in rows:
-        print('row is:   ', row.review)
+        # print('row is:   ', row.review)
         list = jieba.lcut(row.review)
         for i in list:
             if i not in custom_stopwords and len(i) > 1:

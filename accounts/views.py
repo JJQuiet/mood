@@ -9,7 +9,7 @@ import csv, os, json
 from .models import Docitems, Document, editRecord
 from django.http import HttpResponse, JsonResponse
 from .process import *
-
+from mood import settings
 
 def register_view(request):
     if request.method == 'POST':
