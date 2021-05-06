@@ -14,15 +14,15 @@ def csvreview_file_wordcloud(docID):
     for row in rows:
         text = SnowNLP(row.review)
         review_words += ' '.join(text.words) + ' '
-    wordcloud = WordCloud(width = 800, height = 800,
+    wordcloud = WordCloud(width = 700, height = 500,
                     background_color = 'white',
                     stopwords = custom_stopwords,
-                    min_font_size = 10).generate(review_words)
-    plt.figure(figsize = (7, 6), facecolor = None)
-    plt.imshow(wordcloud)
-    plt.axis("off")
-    plt.tight_layout(pad = 0)
-    plt.show()
+                    min_font_size = 10).generate(review_words).to_file(os.path.join(BASE_DIR, 'accounts\static\img\\cloud.png'))
+    # plt.figure(figsize = (7, 6), facecolor = None)
+    # plt.imshow(wordcloud)
+    # plt.axis("off")
+    # plt.tight_layout(pad = 0)
+    # plt.show()
 
 
 def simple_text_wordcloud(sentence):
@@ -31,15 +31,10 @@ def simple_text_wordcloud(sentence):
     text_ = SnowNLP(sentence)
     review_words = ' '.join(text)
     stopwords = open(os.path.join(BASE_DIR, 'accounts\static\snippets\\baidu_stopwords_custom'), 'r', encoding='UTF-8', errors='ignore').read().split("\n")
-    wordcloud = WordCloud(width = 800, height = 800,
+    wordcloud = WordCloud(width = 700, height = 500,
                     background_color = 'white',
                     stopwords = stopwords,
-                    min_font_size = 10).generate(review_words)
-    plt.figure(figsize = (7, 6), facecolor = None)
-    plt.imshow(wordcloud)
-    plt.axis("off")
-    plt.tight_layout(pad = 0)
-    plt.show()
+                    min_font_size = 10).generate(review_words).to_file(os.path.join(BASE_DIR, 'accounts\static\img\\cloud.png'))
 
     
 def stanfordCoreNLP_process(sentence):
@@ -62,16 +57,13 @@ def csvreview_file_word_frequency_bar_plt(docID):
     top10['frequency'] = []
     custom_stopwords = open(os.path.join(BASE_DIR, 'accounts\static\snippets\\baidu_stopwords_custom'), 'r', encoding='UTF-8', errors='ignore').read().split("\n") # list [] , object list {} 都可以
     for row in rows:
-        # print('row is:   ', row.review)
         list = jieba.lcut(row.review)
         for i in list:
             if i not in custom_stopwords and len(i) > 1:
                 review_words[i] = review_words.get(i, 0) + 1
-    print('review_words is:  ', review_words)
     for k, v in sorted(review_words.items(), key=lambda x: -x[1])[:10]:
         top10['frequency'].append(v)
         top10['names'].append(k)
-    print('top10 is :   ', top10)
     plt.figure(figsize=(9, 3))
     plt.rcParams['font.family'] = ['sans-serif']
     # plt.rcParams['font.sans-serif'] = ['SimHei']
@@ -79,5 +71,6 @@ def csvreview_file_word_frequency_bar_plt(docID):
     # plt.rcParams['font.family'] = ['simfang']
     # plt.rcParams['font.simfang'] = ['SimHei']
     plt.bar(top10['names'], top10['frequency'])
-    plt.show()
-    
+    # plt.show()
+    plt.savefig(os.path.join(BASE_DIR, 'accounts\static\img\\frequency.png'))
+    # plt.savefig('static/img/frequency.png')

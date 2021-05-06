@@ -145,12 +145,11 @@ def analyse(request):
         for row in rows:
             result['review'].append(row.review)
             result['sentiment'].append(SnowNLP(row.review).sentiments)
-        print('csv_file_sentiment is : ', result)
         return JsonResponse(result)
     if request.POST['submit'] == 'csvreview_file_wordcloud':
         result = {}
         csvreview_file_wordcloud(request.POST['csv_file_tobe_analysed'])
-        return JsonResponse({result})
+        return JsonResponse({})
     if request.POST['submit'] == 'simple_text_wordcloud':
         simple_text_wordcloud(request.POST['simple_text_wordcloud'])
         return JsonResponse({})
